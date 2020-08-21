@@ -27,10 +27,10 @@ const routes = [
 				path: '/view/:id',
 				component: () => import('@/views/blog/BlogView'),
 			},
-			// {
-			//     path: '/:type/all',
-			//     component: r => require.ensure([], () => r(require('@/views/blog/BlogAllCategoryTag')), 'blogallcategorytag')
-			// },
+			{
+				path: '/:type/all',
+				component: () => import('@/views/blog/BlogAllCategoryTag'),
+			},
 			// {
 			//     path: '/:type/:id',
 			//     component: r => require.ensure([], () => r(require('@/views/blog/BlogCategoryTag')), 'blogcategorytag')

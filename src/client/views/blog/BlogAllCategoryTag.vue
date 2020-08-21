@@ -1,20 +1,21 @@
 <template>
-  <div class="me-allct-body" v-title :data-title="categoryTagTitle" >
+  <!--<div class="me-allct-body" v-title :data-title="categoryTagTitle" >-->
+  <div class="me-allct-body" :data-title="categoryTagTitle" >
     <el-container class="me-allct-container">
       <el-main>
         <el-tabs v-model="activeName">
           <el-tab-pane label="文章分类" name="category">
             <ul class="me-allct-items">
-              <li v-for="c in categorys" @click="view(c.id)" :key="c.id" class="me-allct-item">
+              <li v-for="category in categorys" @click="view(category.id)" :key="category.id" class="me-allct-item">
                 <div class="me-allct-content">
                   <a class="me-allct-info">
-                    <img class="me-allct-img" :src="c.avatar?c.avatar:defaultAvatar"/>
-                    <h4 class="me-allct-name">{{c.categoryName}}</h4>
-                    <p class="me-allct-description">{{c.description}}</p>
+                    <img class="me-allct-img" :src="category.avatar?category.avatar:defaultAvatar"/>
+                    <h4 class="me-allct-name">{{category.categoryName}}</h4>
+                    <p class="me-allct-description">{{category.description}}</p>
                   </a>
 
                   <div class="me-allct-meta">
-                    <span>{{c.articles}} 文章</span>
+                    <span>{{category.articles}} 文章</span>
                   </div>
                 </div>
               </li>
@@ -22,15 +23,15 @@
           </el-tab-pane>
           <el-tab-pane label="标签" name="tag">
             <ul class="me-allct-items">
-              <li v-for="t in tags" @click="view(t.id)" :key="t.id" class="me-allct-item">
+              <li v-for="tag in tags" @click="view(t.id)" :key="tag.id" class="me-allct-item">
                 <div class="me-allct-content">
                   <a class="me-allct-info">
-                    <img class="me-allct-img" :src="t.avatar?t.avatar:defaultAvatar"/>
-                    <h4 class="me-allct-name">{{t.tagName}}</h4>
+                    <img class="me-allct-img" :src="tag.avatar?tag.avatar:defaultAvatar"/>
+                    <h4 class="me-allct-name">{{tag.tagName}}</h4>
                   </a>
 
                   <div class="me-allct-meta">
-                    <span>{{t.articles}}  文章</span>
+                    <span>{{tag.articles}}  文章</span>
                   </div>
                 </div>
               </li>
@@ -70,35 +71,32 @@
         if(this.currentActiveName == 'category'){
           return '文章分类 - For Fun'
         }
-        console.info('dddd---test')
         return '标签 - For Fun'
       }
     },
     created() {
       this.getCategorys()
-      this.getTags()
+      // this.getTags()
     },
     methods: {
       view(id) {
         this.$router.push({path: `/${this.currentActiveName}/${id}`})
       },
       getCategorys() {
-        let that = this
         getAllCategorysDetail().then(data => {
-          that.categorys = data.data
+          this.categorys = data.data
         }).catch(error => {
           if (error !== 'error') {
-            that.$message({type: 'error', message: '文章分类加载失败', showClose: true})
+            this.$message({type: 'error', message: '文章分类加载失败', showClose: true})
           }
         })
       },
       getTags() {
-        let that = this
         getAllTagsDetail().then(data => {
-          that.tags = data.data
+          this.tags = data.data
         }).catch(error => {
           if (error !== 'error') {
-            that.$message({type: 'error', message: '标签加载失败', showClose: true})
+            this.$message({type: 'error', message: '标签加载失败', showClose: true})
           }
         })
       }
@@ -116,7 +114,11 @@
 </script>
 
 <style>
-  .me-allct-body {
+	.el-main {
+		padding: 0;
+	}
+	
+	.me-allct-body {
     margin: 60px auto 140px;
   }
 

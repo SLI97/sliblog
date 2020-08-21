@@ -10,8 +10,9 @@ const webpackConfig = require('../webpack.config');
 const app = express()
 
 app.use(favicon(path.join(__dirname, '../src/public', 'favicon.ico')));
-// app.use(express.static(path.join(__dirname, 'public')))
 app.use(historyApiFallback({ndex: '/index.html'}));
+app.use('/static', express.static(path.join(__dirname, '../src/public/static')))
+
 const compiler = webpack(webpackConfig)
 app.use(webpackDevMiddleware(compiler, {
 	publicPath: webpackConfig.output.publicPath,  // public path should be the same with webpack config
