@@ -103,11 +103,11 @@
     },
     //组件内的守卫 调整body的背景色
     beforeRouteEnter(to, from, next) {
-      window.document.body.style.backgroundColor = '#fff';
+      // window.document.body.style.backgroundColor = '#fff';
       next();
     },
     beforeRouteLeave(to, from, next) {
-      window.document.body.style.backgroundColor = '#f5f5f5';
+      // window.document.body.style.backgroundColor = '#f5f5f5';
       next();
     }
   }

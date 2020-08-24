@@ -36,16 +36,16 @@
     methods: {
       handleScroll(e) {
         var that = this
-        if (!that.noData) {
-          let curHeight = document.documentElement.scrollTop || document.body.scrollTop
-          var scrollPage = document.getElementById('scroll-page');
-
-          if ((curHeight + window.innerHeight >= that.$refs.scroll.offsetHeight + that.offset) && that.isDownDirection()) {
-            if (!that.loading) {
-              that.$emit('load')
-            }
-          }
-        }
+        // if (!that.noData) {
+        //   let curHeight = document.documentElement.scrollTop || document.body.scrollTop
+        //   var scrollPage = document.getElementById('scroll-page');
+				//
+        //   if ((curHeight + window.innerHeight >= that.$refs.scroll.offsetHeight + that.offset) && that.isDownDirection()) {
+        //     if (!that.loading) {
+        //       that.$emit('load')
+        //     }
+        //   }
+        // }
       },
       isDownDirection() {
         if (typeof this.scrollAction.x == 'undefined') {

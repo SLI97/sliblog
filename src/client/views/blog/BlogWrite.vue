@@ -255,24 +255,24 @@
         })
       },
       editorToolBarToFixed() {
-        let toolbar = document.querySelector('.v-note-op');
-        let curHeight = document.documentElement.scrollTop || document.body.scrollTop;
-        if (curHeight >= 160) {
-          document.getElementById("placeholder").style.display = "block"; //bad  用计算属性较好
-          toolbar.classList.add("me-write-toolbar-fixed");
-        } else {
-          document.getElementById("placeholder").style.display = "none";
-          toolbar.classList.remove("me-write-toolbar-fixed");
-        }
-      }
+      //   let toolbar = document.querySelector('.v-note-op');
+      //   let curHeight = document.documentElement.scrollTop || document.body.scrollTop;
+      //   if (curHeight >= 160) {
+      //     document.getElementById("placeholder").style.display = "block"; //bad  用计算属性较好
+      //     toolbar.classList.add("me-write-toolbar-fixed");
+      //   } else {
+      //     document.getElementById("placeholder").style.display = "none";
+      //     toolbar.classList.remove("me-write-toolbar-fixed");
+      //   }
+      // }
     },
     //组件内的守卫 调整body的背景色
     beforeRouteEnter(to, from, next) {
-      window.document.body.style.backgroundColor = '#fff';
+      // window.document.body.style.backgroundColor = '#fff';
       next();
     },
     beforeRouteLeave(to, from, next) {
-      window.document.body.style.backgroundColor = '#f5f5f5';
+      // window.document.body.style.backgroundColor = '#f5f5f5';
       next();
     }
   }

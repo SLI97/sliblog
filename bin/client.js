@@ -5,13 +5,25 @@ const webpack = require('webpack');
 const webpackDevMiddleware = require('webpack-dev-middleware');
 const webpackHotMiddleware = require('webpack-hot-middleware');
 const historyApiFallback = require('connect-history-api-fallback')
-const webpackConfig = require('../webpack.config');
+const webpackConfig = require('../build/webpack.config');
 
 const app = express()
 
 app.use(favicon(path.join(__dirname, '../src/public', 'favicon.ico')));
-app.use(historyApiFallback({ndex: '/index.html'}));
+app.use(historyApiFallback({index: '/index.html'}));
 app.use('/static', express.static(path.join(__dirname, '../src/public/static')))
+
+// let ready
+// const readyPromise = new Promise(r => { ready = r })
+// const update = () => {
+// 	if (bundle && clientManifest) {
+// 		ready()
+// 		cb(bundle, {
+// 			template,
+// 			clientManifest
+// 		})
+// 	}
+// }
 
 const compiler = webpack(webpackConfig)
 app.use(webpackDevMiddleware(compiler, {
@@ -33,6 +45,18 @@ app.use(webpackHotMiddleware(compiler, {
 	// path: "/__what",
 	heartbeat: 10 * 1000
 }))
+//
+// compiler.done('done', stats => {
+// 	stats = stats.toJson()
+// 	stats.errors.forEach(err => console.error(err))
+// 	stats.warnings.forEach(err => console.warn(err))
+// 	if (stats.errors.length) return
+// 	clientManifest = JSON.parse(readFile(
+// 		devMiddleware.fileSystem,
+// 		'vue-ssr-client-manifest.json'
+// 	))
+// 	update()
+// })
 
 const port = 4000
 app.listen(port, () => {
