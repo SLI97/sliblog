@@ -1,18 +1,23 @@
+const path = require('path')
+const VueLoaderPlugin = require('vue-loader/lib/plugin')
 const nodeExternals = require("webpack-node-externals");
 const VueSSRServerPlugin = require("vue-server-renderer/server-plugin");
 const VueSSRClientPlugin = require("vue-server-renderer/client-plugin");
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
 const resolve = dir => path.join(__dirname, dir)
 
 const env = process.env;
 const isServer = env.WEBPACK_TARGET === "server";
+const isProd = env.NODE_ENV === 'production'
 
 module.exports = {
+	mode: isProd ? 'production' : 'development',
 	target: isServer ? "node" : "web",
 	entry: path.resolve(__dirname, `../src/client/entry-${env.WEBPACK_TARGET}.js`),
 	output: {
 		// path: path.resolve(__dirname, './dist'),
-		path: path.resolve(__dirname, `./dist/${env.WEBPACK_TARGET}`),
+		path: path.resolve(__dirname, `../dist/${env.WEBPACK_TARGET}`),
 		//不用webpack-dev-server的话，这里的路径必须跟webpack打包的路径publicPath相同
 		publicPath: '/',
 		filename: '[name]-[hash].js',  //chunkhash,hash
@@ -28,8 +33,8 @@ module.exports = {
 		rules: [
 			{test: /\.vue$/, loader: 'vue-loader'},
 			{test: /\.js$/, loader: 'babel-loader', exclude: path.resolve(__dirname, './node_modules/')},
-			{test: /\.css$/, use: ['style-loader', 'css-loader']},
-			{test: /\.scss$/, use: ["style-loader", "css-loader", "sass-loader"]},
+			{test: /\.css$/, use: [MiniCssExtractPlugin.loader, 'css-loader']},
+			// {test: /\.scss$/, use: ["style-loader", "css-loader", "sass-loader"]},
 			{
 				test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
 				loader: 'url-loader',
@@ -58,11 +63,16 @@ module.exports = {
 		]
 	},
 	plugins: [
+		new VueLoaderPlugin(),
+		new MiniCssExtractPlugin({   //提取css作为单独文件
+			filename: path.join('static', 'css/[name].[contenthash].css'),
+			chunkFilename: path.join('static', 'css/[name].[contenthash].css')
+		}),
 		isServer ? new VueSSRServerPlugin() : new VueSSRClientPlugin()
 	],
 	resolve: {
 		alias: {
-			'@': path.resolve(__dirname, './src/client'),
+			'@': path.resolve(__dirname, '../src/client'),
 		},
 		extensions: ['*', '.js', '.vue', '.json']
 	},

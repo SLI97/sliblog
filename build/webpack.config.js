@@ -8,8 +8,10 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 // const resolve = dir => path.join(__dirname, dir)
 
 const isProd = process.env.NODE_ENV === 'production'
+console.log(isProd)
 
 config = {
+	// haha:'123',
 	mode:isProd?'production':'development',
 	entry: {
 		app: isProd ?
@@ -17,7 +19,7 @@ config = {
 			[path.resolve(__dirname, `../src/client/entry-client.js`), hotMiddlewareScript]
 	},
 	output: {
-		path: path.resolve(__dirname, `./dist/client`),
+		path: path.resolve(__dirname, `../dist/client`),
 		publicPath: '/',
 		filename: '[name]-[hash].js',  //chunkhash,hash
 	},
@@ -86,6 +88,7 @@ if(isProd){
 		filename: path.join('static', 'css/[name].[contenthash].css'),
 		chunkFilename: path.join('static', 'css/[name].[contenthash].css')
 	}))
+}else{
 	config.plugins.push(new webpack.HotModuleReplacementPlugin())
 }
 

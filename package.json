@@ -10,8 +10,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build:client": "cross-env NODE_ENV=production webpack --config webpack.config.js",
     "build:server": "cross-env NODE_ENV=production webpack --config webpack.config.js",
-    "build:client:ssr": "cross-env WEBPACK_TARGET=client webpack --config webpack.config.ssr.js",
-    "build:server:ssr":"cross-env WEBPACK_TARGET=server webpack --config webpack.config.ssr.js",
+    "build:client:ssr": "cross-env WEBPACK_TARGET=client webpack --config build/webpack.config.ssr.js",
+    "build:server:ssr":"cross-env WEBPACK_TARGET=server webpack --config build/webpack.config.ssr.js",
     "ssr":"node bin/client-ssr.js"
   },
   "keywords": [],

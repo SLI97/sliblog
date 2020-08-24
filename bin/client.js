@@ -5,12 +5,12 @@ const webpack = require('webpack');
 const webpackDevMiddleware = require('webpack-dev-middleware');
 const webpackHotMiddleware = require('webpack-hot-middleware');
 const historyApiFallback = require('connect-history-api-fallback')
-const webpackConfig = require('../build/webpack.config');
+const clientConfig = require('../build/webpack.config');
 
 const app = express()
 
 app.use(favicon(path.join(__dirname, '../src/public', 'favicon.ico')));
-app.use(historyApiFallback({index: '/index.html'}));
+app.use(historyApiFallback({ index: '/index.html' }));
 app.use('/static', express.static(path.join(__dirname, '../src/public/static')))
 
 // let ready
@@ -25,38 +25,35 @@ app.use('/static', express.static(path.join(__dirname, '../src/public/static')))
 // 	}
 // }
 
-const compiler = webpack(webpackConfig)
+const compiler = webpack(clientConfig)
 app.use(webpackDevMiddleware(compiler, {
-	publicPath: webpackConfig.output.publicPath,  // public path should be the same with webpack config
-	quiet: true,
-	noInfo: true,
-	stats: {
-		colors: true,
-		modules: false,
-		builtAt: false,
-		entrypoints: false,
-		assets: false,
-	},
-	headers: {"x-Custom-Header": "yes"},
+    publicPath: clientConfig.output.publicPath, // public path should be the same with webpack config
+    quiet: true,
+    noInfo: true,
+    stats: {
+        colors: true,
+        modules: false,
+        builtAt: false,
+        entrypoints: false,
+        assets: false,
+    },
+    headers: { "x-Custom-Header": "yes" },
 }))
 
-app.use(webpackHotMiddleware(compiler, {
-	log: false,
-	// path: "/__what",
-	heartbeat: 10 * 1000
-}))
-//
-// compiler.done('done', stats => {
-// 	stats = stats.toJson()
-// 	stats.errors.forEach(err => console.error(err))
-// 	stats.warnings.forEach(err => console.warn(err))
-// 	if (stats.errors.length) return
-// 	clientManifest = JSON.parse(readFile(
-// 		devMiddleware.fileSystem,
-// 		'vue-ssr-client-manifest.json'
-// 	))
-// 	update()
+app.use(webpackHotMiddleware(compiler))
+
+compiler.hooks.compile.tap('async', (stats) => {
+	console.log("开始编译！")
+});
+
+// compiler.hooks.compile.tap('done', stats => {
+// 	console.log("搞定！！！！！！！！")
 // })
+
+
+compiler.hooks.done.tap('随便写', (stats) => {
+	console.log("搞定！！！！！！！！")
+});
 
 const port = 4000
 app.listen(port, () => {
