@@ -11,7 +11,7 @@
       <el-col v-if="!simple" :span="12" :offset="0">
         <el-menu :router=true menu-trigger="click" active-text-color="#FC87A9" :default-active="activeIndex"
                  mode="horizontal">
-          <el-menu-item index="/">首页</el-menu-item>
+          <el-menu-item index="/">首页12321312dd</el-menu-item>
           <el-menu-item index="/category/all">文章分类</el-menu-item>
           <el-menu-item index="/tag/all">标签</el-menu-item>
           <el-menu-item index="/archives">文章归档</el-menu-item>

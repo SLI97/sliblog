@@ -2,26 +2,24 @@ const path = require('path')
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
 const nodeExternals = require("webpack-node-externals");
 const VueSSRServerPlugin = require("vue-server-renderer/server-plugin");
-const VueSSRClientPlugin = require("vue-server-renderer/client-plugin");
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const base = require("./webpack.base.config")
+const {merge} = require("webpack-merge")
 
 const resolve = dir => path.join(__dirname, dir)
 
 const env = process.env;
-const isServer = env.WEBPACK_TARGET === "server";
 const isProd = env.NODE_ENV === 'production'
 
-module.exports = {
+const config = merge(base, {
+	target: "node",
 	mode: isProd ? 'production' : 'development',
-	target: isServer ? "node" : "web",
-	entry: path.resolve(__dirname, `../src/client/entry-${env.WEBPACK_TARGET}.js`),
+	entry: path.resolve(__dirname, `../src/client/entry-server.js`),
 	output: {
-		// path: path.resolve(__dirname, './dist'),
-		path: path.resolve(__dirname, `../dist/${env.WEBPACK_TARGET}`),
-		//不用webpack-dev-server的话，这里的路径必须跟webpack打包的路径publicPath相同
+		path: path.resolve(__dirname, `../dist`),
 		publicPath: '/',
 		filename: '[name]-[hash].js',  //chunkhash,hash
-		libraryTarget: isServer ? "commonjs2" : undefined,
+		libraryTarget: "commonjs2"
 	},
 	externals: nodeExternals({
 		// 不要外置化 webpack 需要处理的依赖模块。
@@ -68,7 +66,7 @@ module.exports = {
 			filename: path.join('static', 'css/[name].[contenthash].css'),
 			chunkFilename: path.join('static', 'css/[name].[contenthash].css')
 		}),
-		isServer ? new VueSSRServerPlugin() : new VueSSRClientPlugin()
+		new VueSSRServerPlugin()
 	],
 	resolve: {
 		alias: {
@@ -76,4 +74,6 @@ module.exports = {
 		},
 		extensions: ['*', '.js', '.vue', '.json']
 	},
-}
+})
+
+module.exports = config

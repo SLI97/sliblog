@@ -4,15 +4,14 @@
   "description": "vue-express-mysql",
   "main": "bin/server.js",
   "scripts": {
-    "dev": "npm run client && node npm run server",
-    "dev:client": "cross-env NODE_ENV=development node bin/client.js",
     "server": "node bin/server.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build:client": "cross-env NODE_ENV=production webpack --config webpack.config.js",
-    "build:server": "cross-env NODE_ENV=production webpack --config webpack.config.js",
-    "build:client:ssr": "cross-env WEBPACK_TARGET=client webpack --config build/webpack.config.ssr.js",
-    "build:server:ssr":"cross-env WEBPACK_TARGET=server webpack --config build/webpack.config.ssr.js",
-    "ssr":"node bin/client-ssr.js"
+    "dev": "cross-env NODE_ENV=development NODE_TYPE=CSR node bin/client.js",
+    "build": "cross-env NODE_ENV=production NODE_TYPE=CSR webpack --config build/webpack.client.config.js",
+    "dev:ssr": "cross-env NODE_ENV=development NODE_TYPE=SSR node bin/client-ssr.js",
+    "build:ssr": "npm run build:ssr:client && npm run build:ssr:server",
+    "build:ssr:client": "cross-env NODE_ENV=production NODE_TYPE=SSR webpack --config build/webpack.client.config.js",
+    "build:ssr:server": "cross-env NODE_ENV=production NODE_TYPE=SSR webpack --config build/webpack.server.config.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
@@ -43,6 +42,7 @@
     "babel-loader": "^8.1.0",
     "babel-plugin-component": "^1.1.1",
     "body-parser": "~1.13.2",
+    "clean-webpack-plugin": "^3.0.0",
     "cookie-parser": "~1.4.4",
     "css-loader": "^4.0.0",
     "eslint": "^7.6.0",
@@ -50,12 +50,15 @@
     "file-loader": "1.1.11",
     "html-webpack-plugin": "^4.3.0",
     "http-errors": "~1.6.3",
+    "mini-css-extract-plugin": "^0.10.0",
     "moment": "^2.27.0",
     "morgan": "~1.9.1",
     "nodemon": "^1.11.0",
     "sass-loader": "^9.0.2",
     "serve-favicon": "~2.3.0",
     "style-loader": "^1.2.1",
+    "stylus": "^0.54.8",
+    "stylus-loader": "^3.0.2",
     "url-loader": "1.0.1",
     "vue-loader": "^15.9.3",
     "vue-loader-plugin": "^1.3.0",
@@ -65,8 +68,9 @@
     "webpack-cli": "^3.3.12",
     "webpack-dev-middleware": "^3.7.2",
     "webpack-hot-middleware": "^2.25.0",
+    "webpack-merge": "^5.1.2",
     "webpack-node-externals": "^1.7.2",
-    "mini-css-extract-plugin": "^0.10.0",
-    "webpack-merge": "^5.1.2"
+    "uglifyjs-webpack-plugin": "^1.1.1",
+    "optimize-css-assets-webpack-plugin": "^5.0.1"
   }
 }
