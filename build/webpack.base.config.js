@@ -5,6 +5,7 @@ const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');//压缩css插件
 
 config = {
+	devtool: false,
 	module: {
 		rules: [
 			{test: /\.vue$/, loader: 'vue-loader'},
@@ -12,10 +13,10 @@ config = {
 			{test: /\.css$/, use: [isProd ? MiniCssExtractPlugin.loader : 'style-loader', 'css-loader']},
 			{
 				test: /\.styl(us)?$/,
-				use: [isProd ? MiniCssExtractPlugin.loader : 'style-loader', "css-loader", "stylus-loader"]
+				use: [isProd ? MiniCssExtractPlugin.loader : 'style-loader', 'css-loader', "stylus-loader"]
 			},
-			{test: /\.sass/, use: [isProd ? MiniCssExtractPlugin.loader : 'style-loader', "css-loader", "sass-loader"]},
-			{test: /\.scss/, use: [isProd ? MiniCssExtractPlugin.loader : 'style-loader', "css-loader", "sass-loader"]},
+			{test: /\.sass/, use: [isProd ? MiniCssExtractPlugin.loader : 'style-loader', 'css-loader', "sass-loader"]},
+			{test: /\.scss/, use: [isProd ? MiniCssExtractPlugin.loader : 'style-loader', 'css-loader', "sass-loader"]},
 			{
 				test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
 				loader: 'url-loader',
@@ -44,6 +45,29 @@ config = {
 		]
 	},
 	optimization: {
+		splitChunks: {
+			chunks: "all",
+			minSize: 30000, // 模块的最小体积
+			minChunks: 1, // 模块的最小被引用次数
+			maxAsyncRequests: 5, // 按需加载的最大并行请求数
+			maxInitialRequests: 3, // 一个入口最大并行请求数
+			automaticNameDelimiter: '~', // 文件名的连接符
+			name: true,
+			cacheGroups: { // 缓存组
+				vendors: {
+					test: /[\\/]node_modules[\\/]/,
+					priority: -10
+				},
+				default: {
+					minChunks: 2,
+					priority: -20,
+					reuseExistingChunk: true
+				}
+			}
+		},
+		runtimeChunk: {
+			name: 'manifest'
+		},
 		minimizer: [ // 用于配置 minimizers 和选项
 			new UglifyJsPlugin({
 				cache: true,
@@ -51,7 +75,10 @@ config = {
 				sourceMap: false,
 			}),
 			new OptimizeCssAssetsPlugin({  //压缩提取出来的css空格，并且把重复的css样式去掉
-				cssProcessorOptions: {safe: true, map: {inline: false}}
+				cssProcessorOptions: {
+					safe: true,
+					// map: {inline: false}
+				}
 			}),
 		]
 	},

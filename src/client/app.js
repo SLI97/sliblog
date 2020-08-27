@@ -1,8 +1,10 @@
 import Vue from 'vue'
 import App from './App.vue'
+// import ElementUI from 'element-ui';
 import {createStore} from './store'
 import {createRouter} from './router'
 import {sync} from 'vuex-router-sync'
+import {formatTime} from "@/utils/time";
 // import titleMixin from './util/title'
 // import * as filters from './util/filters'
 
@@ -25,6 +27,9 @@ export function createApp() {
 	// this registers `store.state.route`
 	sync(store, router)
 
+
+	// Vue.use(ElementUI, { size: 'small', zIndex: 3000 });
+	Vue.filter('format', formatTime)
 	// create the app instance.
 	// here we inject the router, store and ssr context to all child components,
 	// making them available everywhere as `this.$router` and `this.$store`.

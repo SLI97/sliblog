@@ -17,14 +17,15 @@ const config = merge(base, {
 	target: "web",
 	mode: isProd ? 'production' : 'development',
 	entry: {
-		app: isProd ?
+		app: (isProd ?
 			path.resolve(__dirname, `../src/client/entry-client.js`) :
-			[path.resolve(__dirname, `../src/client/entry-client.js`), hotMiddlewareScript]
+			[path.resolve(__dirname, `../src/client/entry-client.js`), hotMiddlewareScript]),
+		// vendor: ["vue",'vue-router','vuex']
 	},
 	output: {
 		path: path.resolve(__dirname, `../dist`),
 		publicPath: '/',
-		filename: '[name]-[hash].js',  //chunkhash,hash
+		filename: '[name]-[chunkhash].js',  //chunkhash,hash
 		libraryTarget: undefined,
 	},
 	plugins: [
